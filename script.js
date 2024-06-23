@@ -1,56 +1,26 @@
-const loanAmount = document.getElementById("loan_amount");
-const loanTenure = document.getElementById("loan_tenure");
-const loanRate = document.getElementById("loan_interest");
+const passwordBox = document.getElementById("password");
+const length = 12;
 
-const loanEmi = document.querySelector(".loan_emi");
-const loanPrinciple = document.querySelector(".loan_principle");
-const loanTotal = document.querySelector(".loan_total");
-const loanInterest = document.querySelector(".loan_interest_rate");
+const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const lowerCase = "abcdefghijklmnopqrstuvwxyz";
+const number = "0123456789";
+const symbol = "!@#$%^&*()_+~`|}{[]/:,?><;";
 
+const allChars = upperCase + lowerCase + number + symbol;
+function createPassword(){
+  let password = "";
+  password += upperCase[Math.floor(Math.random() * upperCase.length)];
+  password += lowerCase[Math.floor(Math.random() * lowerCase.length)];
+  password += number[Math.floor(Math.random() * number.length)];
+  password += symbol[Math.floor(Math.random() * symbol.length)];
+  
+  while(length > password.length){
+    password += allChars[Math.floor(Math.random() * allChars.length)];
+  }
+  passwordBox.value = password;
+}
 
-
-const submitBtn = document.querySelector(".calculator-btn");
-
-submitBtn.addEventListener("click", function(){
-
-    amount = loanAmount.value;
-    tenure = (loanTenure.value)*12; // 1Year = 12 months
-    rate = (loanRate.value)/12/100; // loan rate per year / 100 = loan percentage
-
-    emi = ((amount * rate * (1+rate)**tenure)/(((1+rate)**tenure)-1));
-    //console.log(emi);
-    total = emi * tenure; // total amount to be paid including interest
-    interest = total - amount // interest = total amount - principle amount
-   // console.log(total);
-    //console.log(interest);
-
-    loanEmi.innerHTML = Math.floor(emi);
-    loanPrinciple.innerHTML = Math.floor(amount);
-    loanTotal.innerHTML = Math.floor(total);
-    loanInterest.innerHTML = Math.floor(interest);
-
-
-    //Loanchart
-    let xValues = ["Principle", "Interest"];
-    let yValues = [amount, Math.floor(interest)];
-
-    let barColors = ["#961251", "#000000"];
-
-    new Chart("loanChart", {
-        type: "pie",
-        data: {
-            labels: xValues,
-            datasets:[{
-                backgroundColor: barColors,
-                data: yValues
-            }]
-        },
-        options: {
-            title: {
-                display:false,
-            }
-        }
-    });
-
-
-});
+function copyPassword(){
+  passwordBox.select();
+  document.execCommand("copy");
+}
